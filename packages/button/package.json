@@ -1,0 +1,21 @@
+{
+  "name": "@qx/button",
+  "main": "./dist/qx-button.umd.js",
+  "module": "./dist/qx-button.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/qx-button.umd.js",
+      "module": "./dist/qx-button.mjs"
+    }
+  },
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@qx/utils": "workspace:^"
+  }
+}

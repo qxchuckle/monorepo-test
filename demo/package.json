@@ -1,0 +1,12 @@
+{
+  "name": "@qx/demo",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@qx/ui": "workspace:^"
+  },
+  "devDependencies": {}
+}

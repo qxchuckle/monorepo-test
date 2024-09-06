@@ -1,0 +1,28 @@
+{
+  "name": "@qx/ui",
+  "main": "./dist/qx-ui.umd.js",
+  "module": "./dist/qx-ui.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/qx-ui.umd.js",
+      "module": "./dist/qx-ui.mjs"
+    },
+    "./*": "./*"
+  },
+  "style": "dist/index.css",
+  "scripts": {
+    "build": "vite build"
+  },
+  "sideEffects": [
+    "dist/*"
+  ],
+  "dependencies": {
+    "@qx/button": "workspace:^",
+    "@qx/utils": "workspace:^",
+    "@qx/list": "workspace:^"
+  }
+}

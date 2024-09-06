@@ -1,0 +1,21 @@
+{
+  "name": "@qx/list",
+  "main": "./dist/qx-list.umd.js",
+  "module": "./dist/qx-list.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/qx-list.umd.js",
+      "module": "./dist/qx-list.mjs"
+    }
+  },
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@qx/utils": "workspace:^"
+  }
+}
