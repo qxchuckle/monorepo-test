@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { hello } from "@qx/utils";
+import { hello } from '@qx/utils';
 
 const props = withDefaults(
   defineProps<{
     text?: string;
   }>(),
   {
-    text: "1111111",
-  }
+    text: 'world',
+  },
 );
 
 function clickHandler() {
@@ -17,7 +17,7 @@ function clickHandler() {
 
 <template>
   <button class="qx-button" @click="clickHandler">
-    <slot></slot>
+    <slot />
   </button>
 </template>
 

@@ -24,5 +24,8 @@
     "@qx/button": "workspace:^",
     "@qx/utils": "workspace:^",
     "@qx/list": "workspace:^"
+  },
+  "peerDependencies": {
+    "vue": ">=3.0.0"
   }
 }

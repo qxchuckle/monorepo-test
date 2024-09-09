@@ -1,21 +1,13 @@
 // 将 vue—tsc 编译产物 d.ts 移动到 packages 对应模块的 dist 目录下
 import { join } from 'node:path';
 import { readdir, cp } from 'node:fs/promises';
-
-/** 以根目录为基础解析路径 */
-const fromRoot = (...paths: string[]) => join(__dirname, '..', ...paths);
-
-/** 包的 d.ts 产物目录 */
-const PKGS_DTS_DIR = fromRoot('dist/packages');
-
-/** 包的目录 */
-const PKGS_DIR = fromRoot('packages');
-
-/** 单个包的 d.ts 产物相对目录 */
-const PKG_DTS_RELATIVE_DIR = 'dist';
-
-/** 包的代码入口相对目录 */
-const PKG_ENTRY_RELATIVE_DIR = 'src';
+import {
+  fromRoot,
+  PKGS_DIR,
+  PKGS_DTS_DIR,
+  PKG_ENTRY_RELATIVE_DIR,
+  PKG_DTS_RELATIVE_DIR,
+} from './utils';
 
 async function main() {
   const pkgs = await match();
@@ -29,7 +21,7 @@ async function match() {
   return res.filter((item) => item.isDirectory()).map((item) => item.name);
 }
 
-/** 
+/**
  * 处理单个包的 dts 移动
  * @param pkgName 包名
  */
@@ -45,10 +37,10 @@ async function resolve(pkgName: string) {
       return cp(source, target, {
         force: true,
         recursive: true,
-      })
-    })
+      });
+    });
     await Promise.all(cpTasks);
-    console.log(`[${pkgName}]: moved successfully!`);  
+    console.log(`[${pkgName}]: moved successfully!`);
   } catch (e) {
     console.log(`[${pkgName}]: failed to move!`);
   }
@@ -57,4 +49,4 @@ async function resolve(pkgName: string) {
 main().catch((e) => {
   console.error(e);
   process.exit(1);
-})
+});

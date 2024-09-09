@@ -6,11 +6,9 @@
     // vite 会读取到这个 tsconfig 文件(位于工作空间根目录)，按照其推荐配置这两个选项
     // https://cn.vitejs.dev/guide/features.html#typescript-compiler-options
     "isolatedModules": true,
-    "useDefineForClassFields": true,
-    "types": [
-      "element-plus/global"
-    ]
+    "useDefineForClassFields": true
   },
+  "types": [],
   "files": [],
   "references": [
     // 聚合 ts project

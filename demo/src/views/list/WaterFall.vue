@@ -5,15 +5,13 @@
       :loading="loading"
       :column="column"
       :space="space"
-      @add-data="addData"
-    >
+      @add-data="addData">
       <template #item="{ item, index, load }">
         <div
           :style="{
             display: 'flex',
             flexDirection: 'column',
-          }"
-        >
+          }">
           <img :src="item.src" @load="load" />
           <span>{{ item.title }}</span>
         </div>
@@ -23,8 +21,8 @@
 </template>
 
 <script setup lang="ts">
-import Mock from "mockjs";
-import { WaterFallList } from "@qx/ui";
+import Mock from 'mockjs';
+import { WaterFallList } from '@qx/ui';
 
 const data = ref<
   {
@@ -36,7 +34,7 @@ const loading = ref(false);
 const column = ref(4);
 const space = ref(10);
 
-let size = 40;
+const size = 40;
 let page = 1;
 const addData = () => {
   // fetchData();
@@ -48,8 +46,8 @@ const simulatedData = () => {
     data.value = data.value.concat(
       new Array(size * 2).fill(0).map((_, index) => ({
         src: Mock.Random.dataImage(),
-        title: Mock.mock("@ctitle(5, 15)"),
-      }))
+        title: Mock.mock('@ctitle(5, 15)'),
+      })),
     );
     loading.value = false;
   }, 1000);
@@ -59,7 +57,7 @@ const fetchData = () => {
   fetch(
     `https://www.vilipix.com/api/v1/picture/public?limit=${size}&offset=${
       (page - 1) * size
-    }&sort=hot&type=0`
+    }&sort=hot&type=0`,
   )
     .then((res) => res.json())
     .then((res) => {
@@ -69,7 +67,7 @@ const fetchData = () => {
         list.map((item: any) => ({
           src: item.regular_url,
           title: item.title,
-        }))
+        })),
       );
       loading.value = false;
     });
@@ -84,8 +82,8 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .list-container {
-  max-width: 800px;
   width: 100%;
+  max-width: 800px;
   height: calc(100vh - 100px);
   border: 1px solid #333;
 }

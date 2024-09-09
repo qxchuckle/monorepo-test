@@ -4,8 +4,7 @@
       :loading="loading"
       :data-source="data"
       :item-height="60"
-      @add-data="addData"
-    >
+      @add-data="addData">
       <template #item="{ item, index }">
         <div>{{ index + 1 }} - {{ item.content }}</div>
       </template>
@@ -14,8 +13,8 @@
 </template>
 
 <script setup lang="ts">
-import { VirtualList } from "@qx/ui";
-import Mock from "mockjs";
+import { VirtualList } from '@qx/ui';
+import Mock from 'mockjs';
 const data = ref<
   {
     content: string;
@@ -27,8 +26,8 @@ const addData = () => {
   setTimeout(() => {
     data.value = data.value.concat(
       new Array(5000).fill(0).map((_, index) => ({
-        content: Mock.mock("@csentence(100)"),
-      }))
+        content: Mock.mock('@csentence(100)'),
+      })),
     );
     loading.value = false;
   }, 1000);
@@ -40,8 +39,8 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .list-container {
-  max-width: 600px;
   width: 100%;
+  max-width: 600px;
   height: calc(100vh - 100px);
   border: 1px solid #333;
 }

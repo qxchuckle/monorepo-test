@@ -1,17 +1,16 @@
 <template>
   <!-- 容器 -->
-  <div class="estimated-virtual-list-container" v-loading="props.loading">
+  <div v-loading="props.loading" class="estimated-virtual-list-container">
     <!-- 内容 -->
-    <div class="estimated-virtual-list-content" ref="contentRef">
+    <div ref="contentRef" class="estimated-virtual-list-content">
       <!-- 虚拟列表 -->
-      <div class="estimated-virtual-list" ref="listRef" :style="listStyle">
+      <div ref="listRef" class="estimated-virtual-list" :style="listStyle">
         <div
-          class="estimated-virtual-list-item"
           v-for="(i, index) in renderList"
           :id="String(state.startIndex + index)"
           :key="state.startIndex + index"
-        >
-          <slot name="item" :item="i" :index="state.startIndex + index"></slot>
+          class="estimated-virtual-list-item">
+          <slot name="item" :item="i" :index="state.startIndex + index" />
         </div>
       </div>
     </div>
@@ -31,8 +30,8 @@ import {
   onMounted,
   onUnmounted,
   nextTick,
-} from "vue";
-import { rafThrottle } from "@qx/utils";
+} from 'vue';
+import { rafThrottle } from '@qx/utils';
 // props类型
 export interface EstimatedListProps<T> {
   loading: boolean; // 加载状态
@@ -67,11 +66,11 @@ const state = reactive({
 });
 // 结束索引
 const endIndex = computed(() =>
-  Math.min(props.dataSource.length, state.startIndex + state.renderCount)
+  Math.min(props.dataSource.length, state.startIndex + state.renderCount),
 );
 // 渲染列表
 const renderList = computed(() =>
-  props.dataSource.slice(state.startIndex, endIndex.value)
+  props.dataSource.slice(state.startIndex, endIndex.value),
 );
 // 位置信息
 const positions = ref<PosInfo[]>([]);
@@ -175,7 +174,7 @@ const createHandleScroll = () => {
     lastScrollTop = scrollTop;
     if (bottom < 20 && isScrollingDown) {
       // 触底触发事件
-      !props.loading && emit("addData");
+      !props.loading && emit('addData');
       // console.log("触底");
     }
   };
@@ -220,14 +219,14 @@ const init = () => {
   state.viewHeight = contentRef.value?.offsetHeight ?? 0;
   // 不定高的渲染数量也是确定的，根据item预设高度得到，所以预设高度应该根据实际情况设置，最好偏小
   state.renderCount = Math.ceil(state.viewHeight / props.estimatedHeight) + 1;
-  contentRef.value?.addEventListener("scroll", handleScroll);
-  window.addEventListener("resize", handleResize);
+  contentRef.value?.addEventListener('scroll', handleScroll);
+  window.addEventListener('resize', handleResize);
 };
 
 // 销毁
 const destroy = () => {
-  contentRef.value?.removeEventListener("scroll", handleScroll);
-  window.removeEventListener("resize", handleResize);
+  contentRef.value?.removeEventListener('scroll', handleScroll);
+  window.removeEventListener('resize', handleResize);
 };
 
 // 当list dom渲染完成后，初始化位置信息，当dataSource变化时，也重新初始化位置信息
@@ -245,7 +244,7 @@ watch(
     nextTick(() => {
       updatePositions();
     });
-  }
+  },
 );
 
 onMounted(() => {
@@ -261,14 +260,16 @@ onUnmounted(() => {
 div.estimated-virtual-list-container {
   width: 100%;
   height: 100%;
+
   div.estimated-virtual-list-content {
     width: 100%;
     height: 100%;
     overflow: auto;
+
     div.estimated-virtual-list {
       div.estimated-virtual-list-item {
-        width: 100%;
         box-sizing: border-box;
+        width: 100%;
         border: 1px solid #333;
       }
     }

@@ -8,5 +8,8 @@
   "dependencies": {
     "@qx/ui": "workspace:^"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "peerDependencies": {
+    "vue": ">=3.0.0"
+  }
 }

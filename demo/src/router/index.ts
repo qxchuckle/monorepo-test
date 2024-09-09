@@ -1,47 +1,47 @@
-import { createRouter, createWebHashHistory } from "vue-router";
-const List = () => import("../views/List.vue");
-const Fixed = () => import("../views/list/Fixed.vue");
-const Estimated = () => import("../views/list/Estimated.vue");
-const WaterFall = () => import("../views/list/WaterFall.vue");
-const VirtualWaterFall = () => import("../views/list/VirtualWaterFall.vue");
+import { createRouter, createWebHashHistory } from 'vue-router';
+const List = () => import('../views/List.vue');
+const Fixed = () => import('../views/list/Fixed.vue');
+const Estimated = () => import('../views/list/Estimated.vue');
+const WaterFall = () => import('../views/list/WaterFall.vue');
+const VirtualWaterFall = () => import('../views/list/VirtualWaterFall.vue');
 
 const router = createRouter({
   history: createWebHashHistory(),
-  linkActiveClass: "active",
+  linkActiveClass: 'active',
   routes: [
     {
-      path: "/",
-      name: "Home",
-      redirect: "/list"
+      path: '/',
+      name: 'Home',
+      redirect: '/list',
     },
     {
-      path: "/list",
-      name: "List",
+      path: '/list',
+      name: 'List',
       component: List,
-      redirect: "/list/fixed",
+      redirect: '/list/fixed',
       children: [
         {
-          path: "fixed",
-          name: "Fixed",
+          path: 'fixed',
+          name: 'Fixed',
           component: Fixed,
         },
         {
-          path: "estimated",
-          name: "Estimated",
+          path: 'estimated',
+          name: 'Estimated',
           component: Estimated,
         },
         {
-          path: "waterfall",
-          name: "WaterFall",
+          path: 'waterfall',
+          name: 'WaterFall',
           component: WaterFall,
         },
         {
-          path: "virtualwaterfall",
-          name: "VirtualWaterFall",
-          component: VirtualWaterFall
-        }
+          path: 'virtualwaterfall',
+          name: 'VirtualWaterFall',
+          component: VirtualWaterFall,
+        },
       ],
-    }
+    },
   ],
 });
 

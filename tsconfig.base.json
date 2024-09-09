@@ -9,7 +9,7 @@
     "outDir": "dist",
     // 编译目标 js 的版本
     "target": "es2022",
-    // 
+    // 生成代码的模板标准
     "module": "esnext",
     // 模块解析策略
     "moduleResolution": "node",

@@ -1,21 +1,19 @@
 <template>
-  <div class="water-fall-panel" v-loading="props.loading">
-    <div class="water-fall-container" ref="containerRef" @scroll="handleScroll">
+  <div v-loading="props.loading" class="water-fall-panel">
+    <div ref="containerRef" class="water-fall-container" @scroll="handleScroll">
       <div
-        class="water-fall-content"
         ref="contentRef"
+        class="water-fall-content"
         :style="{
           height: state.maxHeight + 'px',
-        }"
-      >
+        }">
         <div
-          class="water-fall-item"
           v-for="(i, index) in props.data"
+          :key="index"
+          class="water-fall-item"
           :style="{
             width: state.columnWidth + 'px',
-          }"
-          :key="index"
-        >
+          }">
           <slot name="item" :item="i" :index="index" :load="imgLoadHandle">
             <img :src="i.src" @load="imgLoadHandle" />
           </slot>
@@ -35,8 +33,8 @@ import {
   defineSlots,
   onMounted,
   onUnmounted,
-} from "vue";
-import { rafThrottle, debounce } from "@qx/utils";
+} from 'vue';
+import { rafThrottle, debounce } from '@qx/utils';
 
 interface ItemData {
   src: string; // 图片地址
@@ -110,23 +108,23 @@ const setPositions = () => {
     // img.style.top = minHeight + "px";
     // img.style.left = minHeightIndex * (state.columnWidth + props.space) + "px";
     img.style.setProperty(
-      "--img-tr-x",
-      `${minHeightIndex * (state.columnWidth + props.space)}px`
+      '--img-tr-x',
+      `${minHeightIndex * (state.columnWidth + props.space)}px`,
     );
     img.style.transform = `translate3d(var(--img-tr-x), var(--img-tr-y), 0)`;
-    if (!img.classList.contains("animation-over")) {
-      img.classList.add("animation-over");
-      img.style.transition = "none";
+    if (!img.classList.contains('animation-over')) {
+      img.classList.add('animation-over');
+      img.style.transition = 'none';
       if (i >= state.firstLength) {
-        img.style.setProperty("--img-tr-y", `${minHeight + 60}px`);
+        img.style.setProperty('--img-tr-y', `${minHeight + 60}px`);
       } else {
-        img.style.setProperty("--img-tr-y", `${minHeight}px`);
+        img.style.setProperty('--img-tr-y', `${minHeight}px`);
       }
       img.offsetHeight; // 强制渲染
-      img.style.transition = "all 0.3s";
-      img.style.setProperty("--img-tr-y", `${minHeight}px`);
+      img.style.transition = 'all 0.3s';
+      img.style.setProperty('--img-tr-y', `${minHeight}px`);
     } else {
-      img.style.setProperty("--img-tr-y", `${minHeight}px`);
+      img.style.setProperty('--img-tr-y', `${minHeight}px`);
     }
     // 更新列高
     columnHeight[minHeightIndex] += img.offsetHeight + props.space;
@@ -167,7 +165,7 @@ watch(
   () => {
     // console.log("change column or space");
     resizeComputedLayout();
-  }
+  },
 );
 
 const resizeHandler = debounce(() => {
@@ -176,7 +174,7 @@ const resizeHandler = debounce(() => {
 
 const init = () => {
   computedLayout();
-  window.addEventListener("resize", resizeHandler);
+  window.addEventListener('resize', resizeHandler);
 };
 
 onMounted(() => {
@@ -184,7 +182,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  window.removeEventListener("resize", resizeHandler);
+  window.removeEventListener('resize', resizeHandler);
 });
 
 // 滚动回调
@@ -205,7 +203,7 @@ const createHandleScroll = () => {
         state.lastLength = props.data.length;
         state.loadedLength = 0;
         // 加载新数据
-        !props.loading && emit("addData");
+        !props.loading && emit('addData');
       }
       containerRef.value.offsetHeight;
     }
@@ -216,26 +214,29 @@ const handleScroll = rafThrottle(createHandleScroll());
 
 <style lang="scss">
 .water-fall-panel {
-  height: 100%;
   width: 100%;
+  height: 100%;
+
   .water-fall-container {
-    height: 100%;
     width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+    height: 100%;
+    overflow: hidden auto;
+
     .water-fall-content {
-      height: 100%;
-      width: 100%;
       position: relative;
+      width: 100%;
+      height: 100%;
+
       .water-fall-item {
         position: absolute;
-        transition: all 0.3s;
         overflow: hidden;
+        transition: all 0.3s;
+
         img {
-          width: 100%;
-          object-fit: cover;
-          overflow: hidden;
           display: block;
+          width: 100%;
+          overflow: hidden;
+          object-fit: cover;
         }
       }
     }

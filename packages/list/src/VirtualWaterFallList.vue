@@ -1,36 +1,34 @@
 <template>
-  <div class="virtual-waterfall-panel" v-loading="props.loading">
-    <component :is="'style'">{{ animationStyle }}</component>
-    <div class="virtual-waterfall-container" ref="containerRef">
+  <div v-loading="props.loading" class="virtual-waterfall-panel">
+    <component :is="'style'">
+      {{ animationStyle }}
+    </component>
+    <div ref="containerRef" class="virtual-waterfall-container">
       <div
-        class="virtual-waterfall-list"
         ref="listRef"
+        class="virtual-waterfall-list"
         :style="{
           height: state.minHeight + 'px',
-        }"
-      >
+        }">
         <div
-          class="virtual-waterfall-item"
           v-for="i in state.renderList"
+          :key="i.index"
+          class="virtual-waterfall-item"
           :style="i.style"
           :data-column="i.column"
           :data-renderIndex="i.renderIndex"
-          :data-loaded="i.data.src ? 0 : 1"
-          :key="i.index"
-        >
+          :data-loaded="i.data.src ? 0 : 1">
           <div class="animation-box">
             <slot
               name="item"
               :item="i"
               :index="i.index"
-              :load="imgLoadedHandle"
-            >
+              :load="imgLoadedHandle">
               <img
-                :src="i.data.src"
-                @load="imgLoadedHandle"
                 v-if="props.compute"
-              />
-              <img :src="i.data.src" v-else />
+                :src="i.data.src"
+                @load="imgLoadedHandle" />
+              <img v-else :src="i.data.src" />
             </slot>
           </div>
         </div>
@@ -53,8 +51,8 @@ import {
   onMounted,
   onUnmounted,
   nextTick,
-} from "vue";
-import { throttle, rafThrottle, debounce } from "@qx/utils";
+} from 'vue';
+import { throttle, rafThrottle, debounce } from '@qx/utils';
 
 // 每个图片的数据
 interface ItemData {
@@ -112,13 +110,13 @@ defineSlots<{
 // 动画样式
 const animationStyle = computed(() => {
   // 默认动画
-  let animation = "WaterFallItemAnimate 0.25s";
+  let animation = 'water-fall-item-animate 0.25s';
   // 如果为false，则不需要动画
   if (props.animation === false) {
-    animation = "none";
+    animation = 'none';
   }
   // 如果是字符串，则使用自定义动画
-  if (typeof props.animation === "string") {
+  if (typeof props.animation === 'string') {
     animation = props.animation;
   }
   return `
@@ -225,7 +223,7 @@ const updateMinMaxHeight = () => {
 // 计算样式
 const getRenderStyle = (column: number, offsetY: number) => {
   return {
-    width: state.columnWidth + "px",
+    width: state.columnWidth + 'px',
     transform: `translate3d(${
       column * (state.columnWidth + props.gap)
     }px, ${offsetY}px, 0)`,
@@ -238,7 +236,7 @@ const initQueueList = () => {
     () => ({
       height: 0,
       renderList: [],
-    })
+    }),
   );
 };
 
@@ -324,14 +322,14 @@ const containerRef = ref<HTMLDivElement | null>(null);
  */
 const computedLayout = (
   column: number,
-  targetRenderIndex: number | number[] | undefined = undefined
+  targetRenderIndex: number | number[] | undefined = undefined,
 ) => {
   // console.log("computedLayout");
   const isArrayTarget = Array.isArray(targetRenderIndex);
   // 缓存当前列已渲染的所有元素
-  let list: HTMLDivElement[] = [];
+  const list: HTMLDivElement[] = [];
   for (let i = 0; i < listRef.value!.children.length; i++) {
-    let child = listRef.value!.children[i] as HTMLDivElement;
+    const child = listRef.value!.children[i] as HTMLDivElement;
     if (child.matches(`[data-column='${column}']`)) {
       list.push(child);
     }
@@ -341,7 +339,7 @@ const computedLayout = (
   const queue = state.queueList[column];
   // 获取第一个和最后一个元素的渲染索引
   const firstRenderIndex = parseInt(
-    list[0].getAttribute("data-renderIndex") || "0"
+    list[0].getAttribute('data-renderIndex') || '0',
   );
   const lastRenderIndex = firstRenderIndex + list.length - 1;
   // 获取第一个元素的偏移量，作为初始偏移量
@@ -351,14 +349,14 @@ const computedLayout = (
   for (let i = 0; i < list.length; i++) {
     const item = list[i];
     const renderItem =
-      queue.renderList[parseInt(item.getAttribute("data-renderIndex") || "0")];
+      queue.renderList[parseInt(item.getAttribute('data-renderIndex') || '0')];
     // 如果没有目标，或渲染索引相同，则可以更新实际尺寸
     if (
       !targetRenderIndex ||
       renderItem.renderIndex === targetRenderIndex ||
       (isArrayTarget && targetRenderIndex.includes(renderItem.renderIndex))
     ) {
-      if (item.getAttribute("data-loaded") === "1") {
+      if (item.getAttribute('data-loaded') === '1') {
         // 更新队列高度，也就是加上新的高度与旧高度的差值
         queue.height += item.offsetHeight - renderItem.height;
         // 更新渲染项高度
@@ -402,10 +400,10 @@ const computedLayoutAll = () => {
 // let itemCache: HTMLImageElement[] = [];
 const imgLoadedHandle = function (e: Event) {
   const target = e.target as HTMLImageElement;
-  const item = target.closest(".virtual-waterfall-item") as HTMLImageElement;
+  const item = target.closest('.virtual-waterfall-item') as HTMLImageElement;
   if (!item) return;
   // 标记已加载
-  item.setAttribute("data-loaded", "1");
+  item.setAttribute('data-loaded', '1');
   if (!props.compute) return;
   // itemCache.push(item);
   // if (isAllLoad()) {
@@ -422,8 +420,8 @@ const imgLoadedHandle = function (e: Event) {
   //   itemCache = [];
   // }
   computedLayout(
-    parseInt(item.getAttribute("data-column") || "0"),
-    parseInt(item.getAttribute("data-renderIndex") || "0")
+    parseInt(item.getAttribute('data-column') || '0'),
+    parseInt(item.getAttribute('data-renderIndex') || '0'),
   );
 };
 
@@ -464,7 +462,7 @@ watch(
   {
     deep: false,
     immediate: true,
-  }
+  },
 );
 
 // 滚动回调
@@ -492,7 +490,7 @@ const createHandleScroll = () => {
       const allLoaded = isAllLoad();
       if (allLoaded) {
         isReload && (isReload = false);
-        emit("addData");
+        emit('addData');
       }
     }
     flag = true;
@@ -504,11 +502,11 @@ const createHandleScroll = () => {
       handle();
     };
   };
-  if ("requestIdleCallback" in window) {
+  if ('requestIdleCallback' in window) {
     return createHandle(() => {
       window.requestIdleCallback(fn);
     });
-  } else if ("requestAnimationFrame" in window) {
+  } else if ('requestAnimationFrame' in window) {
     return createHandle(() => {
       window.requestAnimationFrame(fn);
     });
@@ -533,13 +531,13 @@ const resizeHandler = rafThrottle(() => {
 onMounted(() => {
   computedViewHeight();
   computedColumWidth();
-  containerRef.value?.addEventListener("scroll", handleScroll);
-  window.addEventListener("resize", resizeHandler);
+  containerRef.value?.addEventListener('scroll', handleScroll);
+  window.addEventListener('resize', resizeHandler);
 });
 
 onUnmounted(() => {
-  containerRef.value?.removeEventListener("scroll", handleScroll);
-  window.removeEventListener("resize", resizeHandler);
+  containerRef.value?.removeEventListener('scroll', handleScroll);
+  window.removeEventListener('resize', resizeHandler);
 });
 
 // 监视列数变化，更新渲染信息
@@ -549,7 +547,7 @@ watch(
     // 计算列宽
     computedColumWidth();
     reload();
-  }
+  },
 );
 
 defineExpose({
@@ -559,51 +557,61 @@ defineExpose({
 
 <style lang="scss">
 .virtual-waterfall-panel {
-  height: 100%;
   width: 100%;
+  height: 100%;
+
   .virtual-waterfall-container {
-    height: 100%;
     width: 100%;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    height: 100%;
+    overflow: hidden scroll;
+
     .virtual-waterfall-list {
-      height: 100%;
-      width: 100%;
       position: relative;
+      width: 100%;
+      height: 100%;
+
       .virtual-waterfall-item {
         position: absolute;
+        box-sizing: border-box;
+
         // transition: all 0.3s;
         overflow: hidden;
-        box-sizing: border-box;
         transform: translate3d(0);
+
         > .content {
           width: 100%;
           height: auto;
         }
+
         > .animation-box {
           visibility: hidden;
         }
-        &[data-loaded="1"] {
+
+        &[data-loaded='1'] {
           > .animation-box {
             visibility: visible;
-            // animation: WaterFallItemAnimate 0.25s;
+
+            // animation: water-fall-item-animate 0.25s;
           }
         }
+
         img {
-          width: 100%;
-          object-fit: cover;
-          overflow: hidden;
           display: block;
+          width: 100%;
+          overflow: hidden;
+          object-fit: cover;
         }
       }
     }
   }
 }
-@keyframes WaterFallItemAnimate {
+
+@keyframes water-fall-item-animate {
   from {
     opacity: 0;
     transform: translateY(100px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

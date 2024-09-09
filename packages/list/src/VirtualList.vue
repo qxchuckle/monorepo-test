@@ -1,19 +1,18 @@
 <template>
-  <div class="virtual-list-panel" v-loading="props.loading">
+  <div v-loading="props.loading" class="virtual-list-panel">
     <!-- 虚拟列表容器 -->
-    <div class="virtual-list-container" ref="container">
+    <div ref="container" class="virtual-list-container">
       <!-- 虚拟列表 -->
-      <div class="virtual-list" :style="listStyle" ref="list">
+      <div ref="list" class="virtual-list" :style="listStyle">
         <!-- 动态渲染的虚拟列表项 -->
         <div
+          v-for="(i, index) in renderList"
+          :key="startIndex + index"
           class="virtual-list-item"
           :style="{
             height: props.itemHeight + 'px',
-          }"
-          v-for="(i, index) in renderList"
-          :key="startIndex + index"
-        >
-          <slot name="item" :item="i" :index="startIndex + index"></slot>
+          }">
+          <slot name="item" :item="i" :index="startIndex + index" />
         </div>
       </div>
     </div>
@@ -31,8 +30,8 @@ import {
   defineSlots,
   onMounted,
   onUnmounted,
-} from "vue";
-import { rafThrottle } from "@qx/utils";
+} from 'vue';
+import { rafThrottle } from '@qx/utils';
 
 const props = defineProps<{
   loading: boolean; // 加载状态
@@ -104,7 +103,7 @@ const createHandleScroll = () => {
     // 记录上次滚动的距离
     lastScrollTop = scrollTop;
     if (bottom < 20 && isScrollingDown) {
-      !props.loading && emit("addData");
+      !props.loading && emit('addData');
     }
   };
 };
@@ -127,15 +126,15 @@ const init = () => {
   // 渲染数量等于可视区域高度除以item高度再加1
   state.renderCount = Math.ceil(state.viewHeight / props.itemHeight) + 1;
   // 绑定滚动事件
-  container.value?.addEventListener("scroll", handleScroll);
+  container.value?.addEventListener('scroll', handleScroll);
   // 绑定resize事件
-  window.addEventListener("resize", handleResize);
+  window.addEventListener('resize', handleResize);
 };
 
 // 销毁
 const destroy = () => {
-  container.value?.removeEventListener("scroll", handleScroll);
-  window.removeEventListener("resize", handleResize);
+  container.value?.removeEventListener('scroll', handleScroll);
+  window.removeEventListener('resize', handleResize);
 };
 
 onMounted(() => {
@@ -151,19 +150,23 @@ onUnmounted(() => {
 .virtual-list-panel {
   width: 100%;
   height: 100%;
+
   .virtual-list-container {
-    overflow: auto;
     width: 100%;
     height: 100%;
+    overflow: auto;
+
     .virtual-list {
       width: 100%;
       height: 100%;
+
       .virtual-list-item {
+        box-sizing: border-box;
         width: 100%;
+
         /* 固定高度 */
         height: 50px;
         border: 1px solid #333;
-        box-sizing: border-box;
       }
     }
   }

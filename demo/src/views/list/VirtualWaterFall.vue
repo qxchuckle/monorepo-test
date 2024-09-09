@@ -1,26 +1,25 @@
 <template>
   <div class="list-panel">
     <div class="btn-box">
-      <el-button @click="changeMock(MockType.simulated)">模拟数据</el-button>
-      <el-button @click="changeMock(MockType.real)">真实数据</el-button>
-      <el-button @click="changeMock(MockType.noImg)">无图片</el-button>
+      <el-button @click="changeMock(MockType.simulated)"> 模拟数据 </el-button>
+      <el-button @click="changeMock(MockType.real)"> 真实数据 </el-button>
+      <el-button @click="changeMock(MockType.noImg)"> 无图片 </el-button>
     </div>
     <div class="list-container">
       <virtual-water-fall-list
-        :dataSource="data"
+        ref="list"
+        :data-source="data"
         :loading="loading"
         :column="column"
-        :estimatedHeight="estimatedHeight"
+        :estimated-height="estimatedHeight"
         :gap="gap"
         :compute="true"
-        @add-data="addData"
         :animation="animation"
-        ref="list"
-      >
+        @add-data="addData">
         <template #item="{ item, index, load }">
           <div class="item-box">
             <img :src="item.data.src" @load="load" />
-            <span>{{ index + 1 + " " + item.data.title }}</span>
+            <span>{{ index + 1 + ' ' + item.data.title }}</span>
           </div>
         </template>
       </virtual-water-fall-list>
@@ -29,8 +28,8 @@
 </template>
 
 <script setup lang="ts">
-import Mock from "mockjs";
-import { VirtualWaterFallList } from "@qx/ui";
+import Mock from 'mockjs';
+import { VirtualWaterFallList } from '@qx/ui';
 
 const data = ref<
   {
@@ -74,8 +73,8 @@ const simulatedData = () => {
       data.value = data.value.concat(
         new Array(size * 2).fill(0).map((_, index) => ({
           src: Mock.Random.dataImage(),
-          title: Mock.mock("@ctitle(5, 15)"),
-        }))
+          title: Mock.mock('@ctitle(5, 15)'),
+        })),
       );
       loading.value = false;
       resolve(null);
@@ -83,7 +82,7 @@ const simulatedData = () => {
   });
 };
 
-let size = 40;
+const size = 40;
 let page = 1;
 // 真实数据
 const fetchData = () => {
@@ -92,7 +91,7 @@ const fetchData = () => {
     fetch(
       `https://www.vilipix.com/api/v1/picture/public?limit=${size}&offset=${
         (page - 1) * size
-      }&sort=hot&type=0`
+      }&sort=hot&type=0`,
     )
       .then((res) => res.json())
       .then((res) => {
@@ -104,7 +103,7 @@ const fetchData = () => {
             title: item.title,
             height: item.height,
             width: item.width,
-          }))
+          })),
         );
         loading.value = false;
         resolve(null);
@@ -119,9 +118,9 @@ const onImgData = () => {
     setTimeout(() => {
       data.value = data.value.concat(
         new Array(500).fill(0).map((_, index) => ({
-          src: "",
-          title: Mock.mock("@ctitle(20, 100)"),
-        }))
+          src: '',
+          title: Mock.mock('@ctitle(20, 100)'),
+        })),
       );
       loading.value = false;
       resolve(null);
@@ -159,7 +158,7 @@ const changeMock = async (value: number) => {
     await addData();
   } catch (error) {
     loading.value = false;
-    console.error("数据加载出错", error);
+    console.error('数据加载出错', error);
   }
   list.value?.reload();
 };
@@ -171,16 +170,19 @@ const changeMock = async (value: number) => {
   flex-direction: column;
   align-items: center;
   width: 100%;
+
   .btn-box {
     display: flex;
     gap: 10px;
     margin-bottom: 10px;
   }
+
   .list-container {
-    max-width: 800px;
     width: 100%;
+    max-width: 800px;
     height: calc(100vh - 120px);
     border: 1px solid #333;
+
     .item-box {
       display: flex;
       flex-direction: column;
@@ -190,10 +192,11 @@ const changeMock = async (value: number) => {
 </style>
 
 <style>
-@keyframes ItemMoveAnimate {
+@keyframes item-move-animate {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
