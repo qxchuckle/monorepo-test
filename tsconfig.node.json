@@ -5,13 +5,9 @@
     // 该 ts project 将被视作一个部分，通过项目引用(Project References)功能集成到一个 tsconfig.json 中
     "composite": true,
     // node 脚本没有 dom 环境，因此只集成 esnext 库即可
-    "lib": [
-      "ESNext"
-    ],
+    "lib": ["ESNext"],
     // 集成 Node.js 库函数的类型声明
-    "types": [
-      "node"
-    ],
+    "types": ["node"],
     // 脚本有时会以 js 编写，因此允许 js
     "allowJs": true
   },
