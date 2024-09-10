@@ -2,6 +2,7 @@
   "name": "pnpm-workspace-test",
   "private": true,
   "scripts": {
+    "commit": "cz",
     "lint-staged": "lint-staged",
     "lint": "eslint ./",
     "lint:fix": "eslint --fix ./",
@@ -14,6 +15,11 @@
     "build:ui": "pnpm run lint:fix && pnpm run lint:style && pnpm run type:src && pnpm --filter ./packages/** run build && pnpm run dts-mv && pnpm run css-mv",
     "prepare": "husky"
   },
+  "config": {
+    "commitizen": {
+      "path": "cz-customizable"
+    }
+  },
   "devDependencies": {
     "@archoleat/commitlint-define-config": "^1.0.11",
     "@archoleat/prettier-define-config": "^1.0.2",
@@ -25,6 +31,9 @@
     "@types/mockjs": "^1.0.10",
     "@types/node": "^22.5.4",
     "@vitejs/plugin-vue": "^5.1.3",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "cz-customizable": "^7.2.1",
     "eslint": "^9.10.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-define-config": "^2.1.0",
